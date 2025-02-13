@@ -45,7 +45,7 @@ const LoginPage = () => {
       });
       if (response.status === 200) {
         form.reset();
-        router.replace("/");
+        router.push("/");
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 404) {

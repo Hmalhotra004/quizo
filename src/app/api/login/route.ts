@@ -24,11 +24,19 @@ export async function POST(req: NextRequest) {
     if (!isPasswordCorrect)
       return new NextResponse("password incorrect", { status: 401 });
 
+    await db.session.deleteMany({
+      where: {
+        userId: user.id,
+        expires: { lt: new Date() },
+      },
+    });
+
     const sessionToken = await db.session.create({
       data: {
         sessionToken: uuidv4(),
         userId: user.id,
-        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        expires: new Date(Date.now() + 1 * 60 * 1000),
+        // expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       },
     });
 
@@ -46,9 +54,19 @@ export async function POST(req: NextRequest) {
     response.cookies.set({
       name: "quizoSession",
       value: sessionToken.sessionToken,
-      httpOnly: true,
+      // httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      // sameSite: "strict",
+      path: "/",
+      expires: sessionToken.expires,
+    });
+
+    response.cookies.set({
+      name: "quizoUser",
+      value: user.id,
+      // httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      // sameSite: "strict",
       path: "/",
       expires: sessionToken.expires,
     });

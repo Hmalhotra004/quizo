@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const token = req.cookies.get("token");
+  const token = req.cookies.get("quizoSession")?.value;
+  const userId = req.cookies.get("quizoUser")?.value;
 
-  if (!token) {
-    return NextResponse.redirect(new URL("/login", req.url));
+  if (!token || !userId) {
+    return NextResponse.redirect(new URL("/log-in", req.url));
   }
 
   return NextResponse.next();
