@@ -1,6 +1,7 @@
 "use client";
+import Loader from "@/components/Loader";
 import QuizCard from "@/components/QuizCard";
-import { Button } from "@/components/ui/button";
+import ServerError from "@/components/ServerError";
 import { quiz } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -10,7 +11,11 @@ import { Plus } from "lucide-react";
 const DashboardPage = () => {
   const userId = Cookies.get("quizoUser");
 
-  const { data: quizzes } = useQuery<quiz[]>({
+  const {
+    data: quizzes,
+    isLoading,
+    isError,
+  } = useQuery<quiz[]>({
     queryKey: ["quizzes"],
     queryFn: async () => {
       const response = await axios.get("/api/quiz", {
@@ -23,6 +28,14 @@ const DashboardPage = () => {
       return response.data;
     },
   });
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (isError) {
+    return <ServerError />;
+  }
 
   return (
     <section className="flex flex-col items-center mt-8">
@@ -37,12 +50,12 @@ const DashboardPage = () => {
           No Quiz Found. Try Adding one.
         </h1>
       )}
-      <Button
-        variant="float"
-        size="icon"
+      <a
+        href="/create"
+        className=" cursor-pointer fixed bottom-6 right-6 bg-blue-600 text-white rounded-full p-2 shadow-lg hover:bg-blue-700"
       >
         <Plus />
-      </Button>
+      </a>
     </section>
   );
 };

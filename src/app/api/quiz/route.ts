@@ -4,7 +4,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId, session, title, desp } = await req.json();
+    const { userId, title, desp } = await req.json();
+
+    const session = req.headers.get("Authorization")?.split(" ")[1];
 
     if (!session || !userId || !title || !desp)
       return new NextResponse("missing info", { status: 400 });
@@ -28,7 +30,7 @@ export async function POST(req: NextRequest) {
     if (!existingSession)
       return new NextResponse("User Unauthorized", { status: 401 });
 
-    const quiz = db.quiz.create({
+    const quiz = await db.quiz.create({
       data: {
         title,
         description: desp,
@@ -71,7 +73,7 @@ export async function GET(req: NextRequest) {
     if (!existingSession)
       return new NextResponse("User Unauthorized", { status: 401 });
 
-    const quizzes = db.quiz.findMany({
+    const quizzes = await db.quiz.findMany({
       where: {
         userId,
       },
