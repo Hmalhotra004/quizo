@@ -35,7 +35,7 @@ const Navbar = () => {
   }
 
   return (
-    <div className="sticky flex items-center p-4 border-b border-blue-700">
+    <div className="sticky flex items-center p-4 border-b border-murex">
       <h2 className="font-semibold sm:text-xl max-sm:text-lg">Quizo</h2>
       <Button
         variant="ghost"

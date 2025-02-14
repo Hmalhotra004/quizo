@@ -1,6 +1,111 @@
 import db from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const { id } = await params;
+    const { userId, title, desp } = await req.json();
+
+    const session = req.headers.get("Authorization")?.split(" ")[1];
+
+    if (!session || !userId || !id || !title || !desp)
+      return new NextResponse("missing info", { status: 400 });
+
+    const existingUser = await db.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!existingUser)
+      return new NextResponse("User doesnt exists", { status: 401 });
+
+    const existingSession = await db.session.findFirst({
+      where: {
+        userId: userId,
+        sessionToken: session,
+      },
+    });
+
+    if (!existingSession)
+      return new NextResponse("User Unauthorized", { status: 401 });
+
+    const existingQuiz = await db.quiz.findUnique({
+      where: { id },
+    });
+
+    if (!existingQuiz) {
+      return new NextResponse("Quiz not found", { status: 404 });
+    }
+
+    const updatedQuiz = await db.quiz.update({
+      where: {
+        id,
+        userId,
+      },
+      data: {
+        title,
+        description: desp,
+      },
+    });
+
+    return NextResponse.json(updatedQuiz, { status: 200 });
+  } catch (err) {
+    console.error("PUT_QUIZ_ERROR", err);
+    return new NextResponse("error updating quiz", { status: 500 });
+  }
+}
+
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const { id } = await params;
+    const { userId } = await req.json();
+
+    const session = req.headers.get("Authorization")?.split(" ")[1];
+
+    if (!session || !userId || !id)
+      return new NextResponse("missing info", { status: 400 });
+
+    const existingUser = await db.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!existingUser)
+      return new NextResponse("User doesnt exists", { status: 401 });
+
+    const existingSession = await db.session.findFirst({
+      where: {
+        userId: userId,
+        sessionToken: session,
+      },
+    });
+
+    if (!existingSession)
+      return new NextResponse("User Unauthorized", { status: 401 });
+
+    const existingQuiz = await db.quiz.findUnique({
+      where: { id },
+    });
+
+    if (!existingQuiz) {
+      return new NextResponse("Quiz not found", { status: 404 });
+    }
+
+    return NextResponse.json(existingQuiz, { status: 200 });
+  } catch (err) {
+    console.error("GET_QUIZID_ERROR", err);
+    return new NextResponse("error fetching quizid", { status: 500 });
+  }
+}
+
 export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } }

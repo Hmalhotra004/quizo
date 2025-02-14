@@ -13,6 +13,7 @@ export default {
         "liberty-blue": "#0b081d",
         "spanish-roast": "#130f2b",
         "ceremonial-purple": "#312a5b",
+        murex: "#8982b4",
         "cold-dark": "#163853",
         "violet-mix": "#afa9cf",
         harajuku: "#534e72",

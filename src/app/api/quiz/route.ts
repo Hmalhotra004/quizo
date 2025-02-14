@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (!existingUser)
-      return new NextResponse("User doesnt exists", { status: 404 });
+      return new NextResponse("User doesnt exists", { status: 401 });
 
     const existingSession = await db.session.findFirst({
       where: {
@@ -61,7 +61,7 @@ export async function GET(req: NextRequest) {
     });
 
     if (!existingUser)
-      return new NextResponse("User doesnt exists", { status: 404 });
+      return new NextResponse("User doesnt exists", { status: 401 });
 
     const existingSession = await db.session.findFirst({
       where: {

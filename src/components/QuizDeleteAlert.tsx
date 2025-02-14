@@ -40,7 +40,7 @@ const QuizDeleteAlert = ({ id, children }: QuizDeleteAlertProps) => {
           },
         });
         if (response.status === 200) {
-          queryClient.invalidateQueries({ queryKey: ["quizzes"] });
+          queryClient.invalidateQueries({ queryKey: ["quizzes", userId] });
         }
       } catch (err) {
         if (axios.isAxiosError(err) && err.response?.status === 404) {
@@ -54,8 +54,8 @@ const QuizDeleteAlert = ({ id, children }: QuizDeleteAlertProps) => {
           router.refresh();
         } else {
           toast({
-            title: "Quiz Delete",
-            description: "Somthing went wrong",
+            title: "Error Deleting Quiz",
+            description: "Something went wrong",
           });
         }
       }

@@ -9,15 +9,13 @@ interface QuizCardProps {
 
 const QuizCard = ({ quiz }: QuizCardProps) => {
   return (
-    <div className="flex flex-col p-2 gap-y-2 bg-blue-700 rounded-lg min-w-[250px] max-w-[350px] min-h-[150px]">
+    <div className="flex flex-col p-2 gap-y-2 dark:bg-murex rounded-lg min-w-[250px] max-w-[350px] min-h-[150px]">
       <div className="flex justify-start items-center">
         <h2 className="font-semibold dark:text-liberty-blue mr-2 text-lg">
           {quiz.title}
         </h2>
         <div className="flex ml-auto gap-x-2 justify-end">
-          <a
-            href={`/quiz/${quiz.id}?title=${quiz.title}?despcription=${quiz.description}`}
-          >
+          <a href={`/quiz/${quiz.id}`}>
             <Edit
               className="dark:text-liberty-blue cursor-pointer"
               size={20}
