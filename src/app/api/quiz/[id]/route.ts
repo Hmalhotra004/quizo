@@ -65,8 +65,8 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const { userId } = await req.json();
-
+    const { searchParams } = new URL(req.url);
+    const userId = searchParams.get("userId");
     const session = req.headers.get("Authorization")?.split(" ")[1];
 
     if (!session || !userId || !id)
