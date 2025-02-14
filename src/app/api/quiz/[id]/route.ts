@@ -6,7 +6,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const id = await params.id;
     const { userId, title, desp } = await req.json();
 
     const session = req.headers.get("Authorization")?.split(" ")[1];

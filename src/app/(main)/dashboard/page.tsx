@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Cookie from "js-cookie";
 import { Plus } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const DashboardPage = () => {
@@ -65,12 +66,12 @@ const DashboardPage = () => {
           No Quiz Found. Try Adding one.
         </h1>
       )}
-      <a
+      <Link
         href="/quiz/create"
         className="cursor-pointer fixed bottom-6 right-6 bg-blue-600 text-white rounded-full p-2 shadow-lg hover:bg-blue-700"
       >
         <Plus />
-      </a>
+      </Link>
     </section>
   );
 };
