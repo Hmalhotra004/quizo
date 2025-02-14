@@ -138,7 +138,7 @@ const LoginPage = () => {
               </form>
             </Form>
             <div className="flex gap-2 justify-center text-sm mt-6 px-2 text-gray-500">
-              <div>Dont&apos; have an account</div>
+              <div>Don&apos;t have an account</div>
               <a
                 href="/sign-up"
                 className="underline cursor-pointer"

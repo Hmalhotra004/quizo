@@ -26,17 +26,18 @@ export async function POST(req: NextRequest) {
 
     await db.session.deleteMany({
       where: {
-        userId: user.id,
         expires: { lt: new Date() },
       },
     });
+
+    // const expires = new Date(Date.now() + 1 * 60 * 1000);
+    const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
 
     const sessionToken = await db.session.create({
       data: {
         sessionToken: uuidv4(),
         userId: user.id,
-        expires: new Date(Date.now() + 1 * 60 * 1000),
-        // expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        expires,
       },
     });
 
@@ -58,7 +59,7 @@ export async function POST(req: NextRequest) {
       secure: process.env.NODE_ENV === "production",
       // sameSite: "strict",
       path: "/",
-      expires: sessionToken.expires,
+      expires,
     });
 
     response.cookies.set({
@@ -68,12 +69,12 @@ export async function POST(req: NextRequest) {
       secure: process.env.NODE_ENV === "production",
       // sameSite: "strict",
       path: "/",
-      expires: sessionToken.expires,
+      expires,
     });
 
     return response;
   } catch (err) {
-    console.error("REGISTRATION_ERROR", err);
-    return new NextResponse("error creating user", { status: 500 });
+    console.error("LOGIN_ERROR", err);
+    return new NextResponse("error login", { status: 500 });
   }
 }
