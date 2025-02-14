@@ -5,7 +5,7 @@ import Cookie from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-  const Navbar = () => {
+const Navbar = () => {
   const session = Cookie.get("quizoSession");
   const router = useRouter();
   const [loading, setLoading] = useState(false);
