@@ -6,7 +6,7 @@ interface HomeLayoutProps {
 
 export default function HomeLayout({ children }: HomeLayoutProps) {
   return (
-    <section className="h-screen w-screen flex flex-col bg-blue-500">
+    <section className="h-screen w-screen flex flex-col bg-custom-blue-500">
       <Navbar />
       {children}
     </section>

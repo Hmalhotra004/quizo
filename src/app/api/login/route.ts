@@ -41,23 +41,13 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    const response = new NextResponse(
-      JSON.stringify({
-        message: "Login successful",
-        user: { id: user.id, username: user.username },
-      }),
-      {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    const response = NextResponse.json({ status: 200 });
 
     response.cookies.set({
       name: "quizoSession",
       value: sessionToken.sessionToken,
-      // httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      // sameSite: "strict",
+      sameSite: "strict",
       path: "/",
       expires,
     });
@@ -65,9 +55,8 @@ export async function POST(req: NextRequest) {
     response.cookies.set({
       name: "quizoUser",
       value: user.id,
-      // httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      // sameSite: "strict",
+      sameSite: "strict",
       path: "/",
       expires,
     });

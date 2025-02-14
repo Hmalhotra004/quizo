@@ -18,7 +18,11 @@ const HomePage = () => {
     }
   }, [router]);
 
-  return <Loader />;
+  return (
+    <div className="flex justify-center items-center h-screen bg-custom-blue-500">
+      <Loader />
+    </div>
+  );
 };
 
 export default HomePage;

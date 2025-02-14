@@ -10,10 +10,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        "blue-500": "#B1B2FF",
-        "blue-400": "#AAC4FF",
-        "blue-200": "#D2DAFF",
-        "blue-100": "#EEF1FF",
+        "custom-blue-500": "#B1B2FF",
+        "custom-blue-400": "#AAC4FF",
+        "custom-blue-200": "#D2DAFF",
+        "custom-blue-100": "#EEF1FF",
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
