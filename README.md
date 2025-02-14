@@ -26,7 +26,7 @@ cd quizo
 ### Install Dependencies
 
 ```sh
-npm install --force
+npm install
 ```
 
 ### Environment Variables
