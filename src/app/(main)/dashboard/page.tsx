@@ -40,9 +40,14 @@ const DashboardPage = () => {
   return (
     <section className="flex flex-col items-center mt-8">
       {quizzes && quizzes.length > 0 ? (
-        <div>
+        <div className="flex justify-center items-center flex-wrap gap-4">
           {quizzes.map((quiz) => {
-            return <QuizCard key={quiz.id} />;
+            return (
+              <QuizCard
+                key={quiz.id}
+                quiz={quiz}
+              />
+            );
           })}
         </div>
       ) : (
@@ -51,7 +56,7 @@ const DashboardPage = () => {
         </h1>
       )}
       <a
-        href="/create"
+        href="/quiz/create"
         className=" cursor-pointer fixed bottom-6 right-6 bg-blue-600 text-white rounded-full p-2 shadow-lg hover:bg-blue-700"
       >
         <Plus />

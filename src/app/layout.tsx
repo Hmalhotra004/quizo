@@ -1,15 +1,19 @@
 "use client";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { cn } from "@/lib/utils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 
-const poopins = Poppins({
+const poppins = Poppins({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   variable: "--pop",
 });
 
 const queryClient = new QueryClient();
+
+const fonts = `${poppins.className}`;
 
 export default function RootLayout({
   children,
@@ -24,10 +28,18 @@ export default function RootLayout({
       <head>
         <title>Quizo</title>
       </head>
-      <body className={poopins.className}>
-        <QueryClientProvider client={queryClient}>
-          {children}
-        </QueryClientProvider>
+      <body className={cn(fonts, "dark:bg-spanish-roast")}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+          storageKey="quizo-theme"
+          disableTransitionOnChange
+        >
+          <QueryClientProvider client={queryClient}>
+            {children}
+          </QueryClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -64,14 +64,14 @@ const CreateQuizPage = () => {
       } catch (err) {
         if (axios.isAxiosError(err) && err.response?.status === 404) {
           console.log("err 404");
-          // Cookie.remove("quizoUser");
-          // Cookie.remove("quizoSession");
-          // router.refresh();
+          Cookie.remove("quizoUser");
+          Cookie.remove("quizoSession");
+          router.refresh();
         } else if (axios.isAxiosError(err) && err.response?.status === 401) {
           console.log("err 401");
-          // Cookie.remove("quizoUser");
-          // Cookie.remove("quizoSession");
-          // router.refresh();
+          Cookie.remove("quizoUser");
+          Cookie.remove("quizoSession");
+          router.refresh();
         } else {
           form.setError("root", {
             type: "manual",
