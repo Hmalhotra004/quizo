@@ -35,9 +35,10 @@ const QuizDeleteAlert = ({ id, children }: QuizDeleteAlertProps) => {
     mutationFn: async () => {
       try {
         setIsloading(true);
-        const response = await axios.delete(`/api/quiz/${id}`, {
+        const response = await axios.delete(`/api/quiz/id`, {
           data: {
             userId,
+            id,
           },
           headers: {
             Authorization: `Bearer ${Cookie.get("quizoSession")}`,

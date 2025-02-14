@@ -1,13 +1,9 @@
 import db from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(req: NextRequest) {
   try {
-    const id = await params.id;
-    const { userId, title, desp } = await req.json();
+    const { userId, title, desp, id } = await req.json();
 
     const session = req.headers.get("Authorization")?.split(" ")[1];
 
@@ -59,14 +55,11 @@ export async function PUT(
   }
 }
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: NextRequest) {
   try {
-    const { id } = await params;
     const { searchParams } = new URL(req.url);
     const userId = searchParams.get("userId");
+    const id = searchParams.get("id");
     const session = req.headers.get("Authorization")?.split(" ")[1];
 
     if (!session || !userId || !id)
@@ -106,13 +99,9 @@ export async function GET(
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest) {
   try {
-    const { id } = await params;
-    const { userId } = await req.json();
+    const { userId, id } = await req.json();
 
     const session = req.headers.get("Authorization")?.split(" ")[1];
 

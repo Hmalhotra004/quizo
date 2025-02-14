@@ -46,8 +46,8 @@ const EditQuizPage = () => {
     queryKey: ["quiz", userId, quizId],
     queryFn: async () => {
       try {
-        const response = await axios.get(`/api/quiz/${quizId}`, {
-          params: { userId },
+        const response = await axios.get(`/api/quiz/id`, {
+          params: { userId, id: quizId },
           headers: { Authorization: `Bearer ${Cookie.get("quizoSession")}` },
         });
         return response.data;
@@ -86,11 +86,12 @@ const EditQuizPage = () => {
   const { mutateAsync } = useMutation({
     mutationFn: async (values: z.infer<typeof formSchema>) => {
       return axios.put(
-        `/api/quiz/${quizId}`,
+        `/api/quiz/id`,
         {
           title: values.title,
           desp: values.description,
           userId,
+          id: quizId,
         },
         { headers: { Authorization: `Bearer ${Cookie.get("quizoSession")}` } }
       );
