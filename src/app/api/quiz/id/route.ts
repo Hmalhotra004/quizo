@@ -135,14 +135,14 @@ export async function DELETE(req: NextRequest) {
       return new NextResponse("Quiz not found", { status: 404 });
     }
 
-    const quiz = await db.quiz.delete({
+    await db.quiz.delete({
       where: {
         id,
         userId,
       },
     });
 
-    return NextResponse.json(quiz, { status: 200 });
+    return NextResponse.json({ status: 200 });
   } catch (err) {
     console.error("DELETE_QUIZ_ERROR", err);
     return new NextResponse("error deleting quiz", { status: 500 });

@@ -71,8 +71,14 @@ http://localhost:3000/api
 
 ```json
 {
-  "message": "User registered successfully",
-  "token": "jwt_token_here"
+  "user": {
+    "id": "89eca1cb-a511-4eed-8aca-8e65aab7fcb5",
+    "username": "admin",
+    "password": "pass@123",
+    "createdAt:": "2025-02-14T16:50:30.927Z",
+    "updatedAt": "2025-02-14T16:50:30.927Z"
+  },
+  "status": 200
 }
 ```
 
@@ -93,8 +99,7 @@ http://localhost:3000/api
 
 ```json
 {
-  "message": "Login successful",
-  "token": "jwt_token_here"
+  "status": 200
 }
 ```
 
@@ -109,25 +114,26 @@ http://localhost:3000/api
 ```json
 [
   {
-    "id": "1",
+    "id": "24efb231-944e-48ff-8226-26b620b8ea1f",
     "title": "General Knowledge",
-    "description":"description here,
+    "description": "description here",
+    "userId": "24efb231-944e-48ff-8226-26b3dsf2a1f",
+    "createdAt:": "2025-02-14T16:50:30.927Z",
+    "updatedAt": "2025-02-14T16:50:30.927Z"
   }
 ]
 ```
 
 #### Create a Quiz
 
-**Endpoint:** `POST /quizzes`
+**Endpoint:** `POST /quiz`
 
 **Request Body:**
 
 ```json
 {
   "title": "New Quiz",
-  "questions": [
-    { "question": "What is 2 + 2?", "options": ["3", "4", "5"], "answer": "4" }
-  ]
+  "description": "description here"
 }
 ```
 
@@ -135,21 +141,98 @@ http://localhost:3000/api
 
 ```json
 {
-  "message": "Quiz created successfully",
   "quiz": {
     "id": "2",
     "title": "New Quiz",
-    "questions": [
-      {
-        "question": "What is 2 + 2?",
-        "options": ["3", "4", "5"],
-        "answer": "4"
-      }
-    ]
+    "description": "description here",
+    "userId": "24efb231-944e-48ff-8226-26b3dsf2a1f",
+    "createdAt:": "2025-02-14T16:50:30.927Z",
+    "updatedAt": "2025-02-14T16:50:30.927Z"
   }
+  "status": 200
+}
+
+```
+
+#### Delete a Quiz
+
+**Endpoint:** `DELETE /quiz/id`
+
+**Request Body:**
+
+```json
+{
+  "userId": "24efb231-944e-48ff-8226-26b3dsf2a1f",
+  "id": "24efb231-944e-48ff-8226-26b3dsf2a1f"
+}
+```
+
+**Response:**
+
+```json
+{
+  "status": 200
+}
+```
+
+#### GET a Quiz
+
+**Endpoint:** `GET /quiz/id`
+
+**Request Body:**
+
+```json
+{
+  "userId": "24efb231-944e-48ff-8226-26b3dsf2a1f",
+  "id": "24efb231-944e-48ff-8226-26b3dsf2a1f"
+}
+```
+
+**Response:**
+
+```json
+{
+  "quiz": {
+    "id": "2",
+    "title": "New Quiz",
+    "description": "description here",
+    "userId": "24efb231-944e-48ff-8226-26b3dsf2a1f",
+    "createdAt:": "2025-02-14T16:50:30.927Z",
+    "updatedAt": "2025-02-14T16:50:30.927Z"
+  }
+  "status": 200
+}
+```
+
+#### PUT a Quiz
+
+**Endpoint:** `PUT /quiz/id`
+
+**Request Body:**
+
+```json
+{
+  "userId": "24efb231-944e-48ff-8226-26b3dsf2a1f",
+  "id": "24efb231-944e-48ff-8226-26b3dsf2a1f"
+  "title": "Quiz",
+  "description": "description",
+}
+```
+
+**Response:**
+
+```json
+{
+  "quiz": {
+    "id": "2",
+    "title": "New Quiz",
+    "description": "description here",
+    "userId": "24efb231-944e-48ff-8226-26b3dsf2a1f",
+    "createdAt:": "2025-02-14T16:50:30.927Z",
+    "updatedAt": "2025-02-14T16:50:30.927Z"
+  }
+  "status": 200
 }
 ```
 
 ---
-
-This documentation provides basic instructions and API details. Ensure to update it as the project evolves.
