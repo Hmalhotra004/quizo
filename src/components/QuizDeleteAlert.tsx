@@ -16,6 +16,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useState } from "react";
 
 interface QuizDeleteAlertProps {
   children: React.ReactNode;
@@ -23,6 +24,8 @@ interface QuizDeleteAlertProps {
 }
 
 const QuizDeleteAlert = ({ id, children }: QuizDeleteAlertProps) => {
+  const [open, setOpen] = useState(false);
+  const [isLoading, setIsloading] = useState(false);
   const queryClient = useQueryClient();
   const userId = Cookie.get("quizoUser");
   const router = useRouter();
@@ -31,6 +34,7 @@ const QuizDeleteAlert = ({ id, children }: QuizDeleteAlertProps) => {
   const { mutateAsync: onDelete } = useMutation({
     mutationFn: async () => {
       try {
+        setIsloading(true);
         const response = await axios.delete(`/api/quiz/${id}`, {
           data: {
             userId,
@@ -41,9 +45,12 @@ const QuizDeleteAlert = ({ id, children }: QuizDeleteAlertProps) => {
         });
         if (response.status === 200) {
           queryClient.invalidateQueries({ queryKey: ["quizzes", userId] });
+          setIsloading(false);
+          setOpen(false);
         }
       } catch (err) {
         if (axios.isAxiosError(err) && err.response?.status === 404) {
+          setIsloading(false);
           toast({
             title: "Quiz Delete",
             description: "Quiz Doesn't exist",
@@ -52,7 +59,9 @@ const QuizDeleteAlert = ({ id, children }: QuizDeleteAlertProps) => {
           Cookie.remove("quizoUser");
           Cookie.remove("quizoSession");
           router.refresh();
+          setIsloading(false);
         } else {
+          setIsloading(false);
           toast({
             title: "Error Deleting Quiz",
             description: "Something went wrong",
@@ -63,7 +72,10 @@ const QuizDeleteAlert = ({ id, children }: QuizDeleteAlertProps) => {
   });
 
   return (
-    <AlertDialog>
+    <AlertDialog
+      open={open}
+      onOpenChange={setOpen}
+    >
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent
         onClick={(e) => e.stopPropagation()}
@@ -78,6 +90,7 @@ const QuizDeleteAlert = ({ id, children }: QuizDeleteAlertProps) => {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel
+            disabled={isLoading}
             onClick={(e) => e.stopPropagation()}
             className="border-0 dark:bg-transparent"
           >
@@ -85,6 +98,7 @@ const QuizDeleteAlert = ({ id, children }: QuizDeleteAlertProps) => {
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={() => onDelete()}
+            disabled={isLoading}
             className="dark:text-rose-600 dark:bg-spanish-roast dark:hover:bg-slate-800"
           >
             Delete

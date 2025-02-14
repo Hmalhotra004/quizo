@@ -30,7 +30,7 @@ const FormInput = ({
     <Input
       className={cn(
         `form-input block w-full border-0 py-1.5 text-white shadow-sm 
-          ring-1 ring-white dark:bg-transparent sm:text-sm sm:leading-6 
+          ring-1 ring-white dark:bg-transparent sm:text-sm lg:text-base sm:leading-6 
           focus-visible:ring-offset-0 focus:ring-0`,
         disabled && "opacity-50 cursor-default",
         fieldState?.error && "focus-visible:ring-red-900"
