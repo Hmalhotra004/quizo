@@ -47,15 +47,21 @@ The server should now be running at `http://localhost:3000/`.
 # Quiz API Documentation
 
 ## Authentication
+
 All requests require an Authorization header with a session token:
+
 ```json
-Authorization: Bearer <session_token>
+{
+  "Authorization": "Bearer <session_token>"
+}
 ```
 
 ## User Endpoints
 
 ### Register a New User
+
 **POST /api/register**
+
 - **Request Body:**
   ```json
   {
@@ -72,7 +78,9 @@ Authorization: Bearer <session_token>
   ```
 
 ### Login
+
 **POST /api/login**
+
 - **Request Body:**
   ```json
   {
@@ -89,7 +97,9 @@ Authorization: Bearer <session_token>
   - Sets cookies: `quizoSession` and `quizoUser`
 
 ### Logout
+
 **DELETE /api/logout**
+
 - **Request Body:**
   ```json
   {
@@ -106,7 +116,9 @@ Authorization: Bearer <session_token>
 ## Quiz Endpoints
 
 ### Create a Quiz
+
 **POST /api/quiz**
+
 - **Request Body:**
   ```json
   {
@@ -126,7 +138,9 @@ Authorization: Bearer <session_token>
   ```
 
 ### Get All Quizzes by User
+
 **GET /api/quiz?userId=**`<userId>`
+
 - **Response:**
   ```json
   [
@@ -140,7 +154,9 @@ Authorization: Bearer <session_token>
   ```
 
 ### Get a Specific Quiz
+
 **GET /api/quiz?userId=**`<userId>`**&id=**`<quizId>`
+
 - **Response:**
   ```json
   {
@@ -152,7 +168,9 @@ Authorization: Bearer <session_token>
   ```
 
 ### Update a Quiz
+
 **PUT /api/quiz**
+
 - **Request Body:**
   ```json
   {
@@ -173,7 +191,9 @@ Authorization: Bearer <session_token>
   ```
 
 ### Delete a Quiz
+
 **DELETE /api/quiz**
+
 - **Request Body:**
   ```json
   {
@@ -189,9 +209,9 @@ Authorization: Bearer <session_token>
   ```
 
 ## Error Handling
+
 - **400:** Missing information in request
 - **401:** Unauthorized access
 - **404:** Resource not found
 - **409:** Conflict (e.g., username already exists)
 - **500:** Internal server error
-
