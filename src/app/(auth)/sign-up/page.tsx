@@ -9,29 +9,29 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import FormInput from "@/components/FormInput";
+import Label from "@/components/Label";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
-  name: z.string().min(1, "name is required"),
+  username: z.string().min(1, "Username is required"),
   password: z.string().min(6, "Password should be at least 6 characters"),
 });
 
 const SignUpPage = () => {
   const [isLoading, setIsLoading] = useState(false);
-
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      username: "",
       password: "",
     },
   });
@@ -40,7 +40,7 @@ const SignUpPage = () => {
     setIsLoading(true);
     try {
       const response = await axios.post("/api/register", {
-        username: values.name,
+        username: values.username,
         password: values.password,
       });
       if (response.status === 200) {
@@ -50,7 +50,7 @@ const SignUpPage = () => {
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 409) {
         const errorData = error.response.data;
-        form.setError("name", {
+        form.setError("username", {
           type: "manual",
           message: errorData,
         });
@@ -66,13 +66,13 @@ const SignUpPage = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center h-dvh">
-      <div className="mx-auto w-full sm:max-w-md border-stone-200 border-2">
-        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-stone-900">
+    <section className="flex flex-col justify-center items-center h-dvh">
+      <div className="mx-auto w-full sm:max-w-md">
+        <h2 className="text-center lg:text-3xl max-lg:text-2xl font-bold tracking-tight dark:text-white">
           Sign up an account
         </h2>
         <div className="mt-2">
-          <div className="px-4 py-8 sm:px-10">
+          <div className="px-4 py-8 max-sm:px-10">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -80,10 +80,13 @@ const SignUpPage = () => {
               >
                 <FormField
                   control={form.control}
-                  name="name"
+                  name="username"
                   render={({ field, fieldState }) => (
-                    <FormItem>
-                      <FormLabel id="name">Name</FormLabel>
+                    <FormItem className="relative">
+                      <Label
+                        fieldState={fieldState}
+                        label="Username"
+                      />
                       <FormControl>
                         <FormInput
                           id="name"
@@ -102,8 +105,11 @@ const SignUpPage = () => {
                   control={form.control}
                   name="password"
                   render={({ field, fieldState }) => (
-                    <FormItem>
-                      <FormLabel id="password">Password</FormLabel>
+                    <FormItem className="relative">
+                      <Label
+                        fieldState={fieldState}
+                        label="Password"
+                      />
                       <FormControl>
                         <FormInput
                           id="password"
@@ -127,11 +133,15 @@ const SignUpPage = () => {
                   type="submit"
                   className="w-full"
                 >
-                  Sign up
+                  {isLoading ? (
+                    <Loader2 className="animate-spin" />
+                  ) : (
+                    <span>Sign up</span>
+                  )}
                 </Button>
               </form>
             </Form>
-            <div className="flex gap-2 justify-center text-sm mt-6 px-2 text-gray-500">
+            <div className="flex gap-2 justify-center xs:text-sm lg:text-base mt-6 px-2 text-gray-500">
               <div>Already have an account?</div>
               <a
                 href="/log-in"
@@ -143,7 +153,7 @@ const SignUpPage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

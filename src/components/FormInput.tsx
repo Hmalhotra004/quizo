@@ -29,9 +29,9 @@ const FormInput = ({
   return (
     <Input
       className={cn(
-        `form-input block w-full border-0 py-1.5 text-gray-900 shadow-sm 
-          ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus-visible:ring-2
-        focus-visible:ring-inset focus-visible:ring-stone-700 sm:text-sm sm:leading-6 focus-visible:ring-offset-0`,
+        `form-input block w-full border-0 py-1.5 text-white shadow-sm 
+          ring-1 ring-white dark:bg-transparent sm:text-sm sm:leading-6 
+          focus-visible:ring-offset-0 focus:ring-0`,
         disabled && "opacity-50 cursor-default",
         fieldState?.error && "focus-visible:ring-red-900"
       )}
