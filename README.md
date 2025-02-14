@@ -2,6 +2,11 @@
 
 Quizo is a quiz application designed to provide an interactive and engaging experience. This README contains setup instructions and API documentation.
 
+## Hosting & Database
+
+- **Frontend & API Hosting**: The project is hosted on **Vercel**. You can access it here: [Project Link](https://quizo-omega.vercel.app)
+- **Database**: The project uses **Supabase** as the database backend.
+
 ## Project Setup
 
 ### Prerequisites
