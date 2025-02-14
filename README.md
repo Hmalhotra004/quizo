@@ -44,195 +44,154 @@ npm run dev
 
 The server should now be running at `http://localhost:3000/`.
 
-## API Documentation
+# Quiz API Documentation
 
-### Base URL
-
-```
-http://localhost:3000/api
-```
-
-### Authentication
-
-#### Register
-
-**Endpoint:** `POST /register`
-
-**Request Body:**
-
+## Authentication
+All requests require an Authorization header with a session token:
 ```json
-{
-  "username": "testuser",
-  "password": "password123"
-}
+Authorization: Bearer <session_token>
 ```
 
-**Response:**
+## User Endpoints
 
-```json
-{
-  "user": {
-    "id": "89eca1cb-a511-4eed-8aca-8e65aab7fcb5",
-    "username": "admin",
-    "password": "pass@123",
-    "createdAt:": "2025-02-14T16:50:30.927Z",
-    "updatedAt": "2025-02-14T16:50:30.927Z"
-  },
-  "status": 200
-}
-```
-
-#### Login
-
-**Endpoint:** `POST /login`
-
-**Request Body:**
-
-```json
-{
-  "username": "testuser",
-  "password": "password123"
-}
-```
-
-**Response:**
-
-```json
-{
-  "status": 200
-}
-```
-
-### Quizzes
-
-#### Get All Quizzes
-
-**Endpoint:** `GET /quiz`
-
-**Response:**
-
-```json
-[
+### Register a New User
+**POST /api/register**
+- **Request Body:**
+  ```json
   {
-    "id": "24efb231-944e-48ff-8226-26b620b8ea1f",
-    "title": "General Knowledge",
-    "description": "description here",
-    "userId": "24efb231-944e-48ff-8226-26b3dsf2a1f",
-    "createdAt:": "2025-02-14T16:50:30.927Z",
-    "updatedAt": "2025-02-14T16:50:30.927Z"
+    "username": "exampleUser",
+    "password": "securePassword"
   }
-]
-```
-
-#### Create a Quiz
-
-**Endpoint:** `POST /quiz`
-
-**Request Body:**
-
-```json
-{
-  "title": "New Quiz",
-  "description": "description here"
-}
-```
-
-**Response:**
-
-```json
-{
-  "quiz": {
-    "id": "2",
-    "title": "New Quiz",
-    "description": "description here",
-    "userId": "24efb231-944e-48ff-8226-26b3dsf2a1f",
-    "createdAt:": "2025-02-14T16:50:30.927Z",
-    "updatedAt": "2025-02-14T16:50:30.927Z"
+  ```
+- **Response:**
+  ```json
+  {
+    "id": "userId",
+    "username": "exampleUser"
   }
-  "status": 200
-}
+  ```
 
-```
-
-#### Delete a Quiz
-
-**Endpoint:** `DELETE /quiz/id`
-
-**Request Body:**
-
-```json
-{
-  "userId": "24efb231-944e-48ff-8226-26b3dsf2a1f",
-  "id": "24efb231-944e-48ff-8226-26b3dsf2a1f"
-}
-```
-
-**Response:**
-
-```json
-{
-  "status": 200
-}
-```
-
-#### GET a Quiz
-
-**Endpoint:** `GET /quiz/id`
-
-**Request Body:**
-
-```json
-{
-  "userId": "24efb231-944e-48ff-8226-26b3dsf2a1f",
-  "id": "24efb231-944e-48ff-8226-26b3dsf2a1f"
-}
-```
-
-**Response:**
-
-```json
-{
-  "quiz": {
-    "id": "2",
-    "title": "New Quiz",
-    "description": "description here",
-    "userId": "24efb231-944e-48ff-8226-26b3dsf2a1f",
-    "createdAt:": "2025-02-14T16:50:30.927Z",
-    "updatedAt": "2025-02-14T16:50:30.927Z"
+### Login
+**POST /api/login**
+- **Request Body:**
+  ```json
+  {
+    "username": "exampleUser",
+    "password": "securePassword"
   }
-  "status": 200
-}
-```
-
-#### PUT a Quiz
-
-**Endpoint:** `PUT /quiz/id`
-
-**Request Body:**
-
-```json
-{
-  "userId": "24efb231-944e-48ff-8226-26b3dsf2a1f",
-  "id": "24efb231-944e-48ff-8226-26b3dsf2a1f"
-  "title": "Quiz",
-  "description": "description",
-}
-```
-
-**Response:**
-
-```json
-{
-  "quiz": {
-    "id": "2",
-    "title": "New Quiz",
-    "description": "description here",
-    "userId": "24efb231-944e-48ff-8226-26b3dsf2a1f",
-    "createdAt:": "2025-02-14T16:50:30.927Z",
-    "updatedAt": "2025-02-14T16:50:30.927Z"
+  ```
+- **Response:**
+  ```json
+  {
+    "status": 200
   }
-  "status": 200
-}
-```
+  ```
+  - Sets cookies: `quizoSession` and `quizoUser`
 
----
+### Logout
+**DELETE /api/logout**
+- **Request Body:**
+  ```json
+  {
+    "session": "session_token"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "status": 200
+  }
+  ```
+
+## Quiz Endpoints
+
+### Create a Quiz
+**POST /api/quiz**
+- **Request Body:**
+  ```json
+  {
+    "userId": "userId",
+    "title": "Quiz Title",
+    "desp": "Quiz Description"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "id": "quizId",
+    "title": "Quiz Title",
+    "description": "Quiz Description",
+    "userId": "userId"
+  }
+  ```
+
+### Get All Quizzes by User
+**GET /api/quiz?userId=**`<userId>`
+- **Response:**
+  ```json
+  [
+    {
+      "id": "quizId",
+      "title": "Quiz Title",
+      "description": "Quiz Description",
+      "userId": "userId"
+    }
+  ]
+  ```
+
+### Get a Specific Quiz
+**GET /api/quiz?userId=**`<userId>`**&id=**`<quizId>`
+- **Response:**
+  ```json
+  {
+    "id": "quizId",
+    "title": "Quiz Title",
+    "description": "Quiz Description",
+    "userId": "userId"
+  }
+  ```
+
+### Update a Quiz
+**PUT /api/quiz**
+- **Request Body:**
+  ```json
+  {
+    "userId": "userId",
+    "id": "quizId",
+    "title": "Updated Title",
+    "desp": "Updated Description"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "id": "quizId",
+    "title": "Updated Title",
+    "description": "Updated Description",
+    "userId": "userId"
+  }
+  ```
+
+### Delete a Quiz
+**DELETE /api/quiz**
+- **Request Body:**
+  ```json
+  {
+    "userId": "userId",
+    "id": "quizId"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "status": 200
+  }
+  ```
+
+## Error Handling
+- **400:** Missing information in request
+- **401:** Unauthorized access
+- **404:** Resource not found
+- **409:** Conflict (e.g., username already exists)
+- **500:** Internal server error
+
