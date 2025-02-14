@@ -33,30 +33,32 @@ const QuizDeleteAlert = ({ id, children }: QuizDeleteAlertProps) => {
 
   const { mutateAsync: onDelete } = useMutation({
     mutationFn: async () => {
-      try {
-        setIsloading(true);
-        const response = await axios.delete(`/api/quiz/id`, {
-          data: {
-            userId,
-            id,
-          },
-          headers: {
-            Authorization: `Bearer ${Cookie.get("quizoSession")}`,
-          },
-        });
-        if (response.status === 200) {
-          queryClient.invalidateQueries({ queryKey: ["quizzes", userId] });
-          setIsloading(false);
-          setOpen(false);
-        }
-      } catch (err) {
-        if (axios.isAxiosError(err) && err.response?.status === 404) {
+      setIsloading(true);
+      return axios.delete(`/api/quiz/id`, {
+        data: { userId, id },
+        headers: {
+          Authorization: `Bearer ${Cookie.get("quizoSession")}`,
+        },
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["quizzes", userId] });
+      toast({
+        title: "Quiz Deleted",
+        description: "Successfully removed the quiz.",
+      });
+      setIsloading(false);
+      setOpen(false);
+    },
+    onError: (err) => {
+      if (axios.isAxiosError(err)) {
+        if (err.response?.status === 404) {
           setIsloading(false);
           toast({
-            title: "Quiz Delete",
-            description: "Quiz Doesn't exist",
+            title: "Quiz Not Found",
+            description: "Quiz doesn't exist.",
           });
-        } else if (axios.isAxiosError(err) && err.response?.status === 401) {
+        } else if (err.response?.status === 401) {
           Cookie.remove("quizoUser");
           Cookie.remove("quizoSession");
           router.refresh();
@@ -65,7 +67,7 @@ const QuizDeleteAlert = ({ id, children }: QuizDeleteAlertProps) => {
           setIsloading(false);
           toast({
             title: "Error Deleting Quiz",
-            description: "Something went wrong",
+            description: "Something went wrong.",
           });
         }
       }

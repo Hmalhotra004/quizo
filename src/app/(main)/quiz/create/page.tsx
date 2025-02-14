@@ -46,40 +46,38 @@ const CreateQuizPage = () => {
 
   const { mutateAsync } = useMutation({
     mutationFn: async (values: z.infer<typeof formSchema>) => {
-      try {
-        const response = await axios.post(
-          `/api/quiz`,
-          {
-            title: values.title,
-            desp: values.description,
-            userId,
+      return await axios.post(
+        `/api/quiz`,
+        {
+          title: values.title,
+          desp: values.description,
+          userId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${Cookie.get("quizoSession")}`,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${Cookie.get("quizoSession")}`,
-            },
-          }
-        );
-        if (response.status === 200) {
-          queryClient.invalidateQueries({ queryKey: ["quizzes", userId] });
-          form.reset();
-          router.push("/dashboard");
-          setLoading(false);
         }
-        return response.data;
-      } catch (err) {
-        if (axios.isAxiosError(err) && err.response?.status === 401) {
-          Cookie.remove("quizoUser");
-          Cookie.remove("quizoSession");
-          router.refresh();
-          setLoading(false);
-        } else {
-          setLoading(false);
-          form.setError("root", {
-            type: "manual",
-            message: "An error occurred. Please try again.",
-          });
-        }
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["quizzes", userId] });
+      setLoading(false);
+      form.reset();
+      router.push("/dashboard");
+    },
+    onError: (err) => {
+      if (axios.isAxiosError(err) && err.response?.status === 401) {
+        setLoading(false);
+        Cookie.remove("quizoUser");
+        Cookie.remove("quizoSession");
+        router.refresh();
+      } else {
+        setLoading(false);
+        form.setError("root", {
+          type: "manual",
+          message: "An error occurred. Please try again.",
+        });
       }
     },
   });
