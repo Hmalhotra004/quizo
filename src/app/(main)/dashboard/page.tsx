@@ -5,11 +5,11 @@ import ServerError from "@/components/ServerError";
 import { quiz } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import Cookies from "js-cookie";
+import Cookie from "js-cookie";
 import { Plus } from "lucide-react";
 
 const DashboardPage = () => {
-  const userId = Cookies.get("quizoUser");
+  const userId = Cookie.get("quizoUser");
 
   const {
     data: quizzes,
@@ -21,10 +21,9 @@ const DashboardPage = () => {
       const response = await axios.get("/api/quiz", {
         params: { userId },
         headers: {
-          Authorization: `Bearer ${Cookies.get("quizoSession")}`,
+          Authorization: `Bearer ${Cookie.get("quizoSession")}`,
         },
       });
-      console.log(response.data);
       return response.data;
     },
   });

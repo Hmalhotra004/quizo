@@ -10,10 +10,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        "custom-blue-500": "#B1B2FF",
-        "custom-blue-400": "#AAC4FF",
-        "custom-blue-200": "#D2DAFF",
-        "custom-blue-100": "#EEF1FF",
+        "liberty-blue": "#0b081d",
+        "spanish-roast": "#130f2b",
+        "ceremonial-purple": "#312a5b",
+        "cold-dark": "#163853",
+        "violet-mix": "#afa9cf",
+        harajuku: "#534e72",
+        "chalk-violet": "#907ba4",
+        "test-green": "#2bd45f",
         background: "var(--background)",
         foreground: "var(--foreground)",
       },

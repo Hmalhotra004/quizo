@@ -1,0 +1,56 @@
+import db from "@/lib/db";
+import { NextRequest, NextResponse } from "next/server";
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const { id } = await params;
+    const { userId } = await req.json();
+
+    const session = req.headers.get("Authorization")?.split(" ")[1];
+
+    if (!session || !userId || !id)
+      return new NextResponse("missing info", { status: 400 });
+
+    const existingUser = await db.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!existingUser)
+      return new NextResponse("User doesnt exists", { status: 401 });
+
+    const existingSession = await db.session.findFirst({
+      where: {
+        userId: userId,
+        sessionToken: session,
+      },
+    });
+
+    if (!existingSession)
+      return new NextResponse("User Unauthorized", { status: 401 });
+
+    const existingQuiz = await db.quiz.findUnique({
+      where: { id },
+    });
+
+    if (!existingQuiz) {
+      return new NextResponse("Quiz not found", { status: 404 });
+    }
+
+    const quiz = await db.quiz.delete({
+      where: {
+        id,
+        userId,
+      },
+    });
+
+    return NextResponse.json(quiz, { status: 200 });
+  } catch (err) {
+    console.error("DELETE_QUIZ_ERROR", err);
+    return new NextResponse("error deleting quiz", { status: 500 });
+  }
+}
