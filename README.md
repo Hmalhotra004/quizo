@@ -6,6 +6,7 @@ Quizo is a quiz application designed to provide an interactive and engaging expe
 
 - **Frontend & API Hosting**: The project is hosted on **Vercel**. You can access it here: [Project Link](https://quizo-omega.vercel.app)
 - **Database**: The project uses **Supabase** as the database backend.
+- **Preregistred User**: Username: admin & password: pass@123
 
 ## Project Setup
 
